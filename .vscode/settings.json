@@ -2,5 +2,6 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "prettier.singleQuote": true,
-  "prettier.trailingComma": "all"
+  "prettier.trailingComma": "all",
+  "cSpell.words": ["jsonify"]
 }

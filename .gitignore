@@ -1,7 +1,4 @@
-node_modules
+encryption_key.key
+.env
 
-dist
-
-*node_modules
-
-*.npmrc
+old
