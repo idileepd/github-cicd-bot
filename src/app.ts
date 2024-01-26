@@ -42,7 +42,7 @@ const ExpressConfig = (): Application => {
   app.use(morgan('dev'))
 
   app.get('/', hello)
-  app.post('/menudhe', runMenudheHook)
+  app.get('/menudhe', runMenudheHook)
 
   return app
 }
