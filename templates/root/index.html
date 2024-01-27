@@ -1,0 +1,74 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account List</title>
+  </head>
+  <body>
+    <h1>Account List</h1>
+    <ul>
+      {% for account in accounts %}
+      <li>{{ account.name }} - {{ account.accountId }}</li>
+      {% endfor %}
+    </ul>
+    <a href="{{ url_for('root.create') }}">Create New Account</a>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account List</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect(
+        'http://' + document.domain + ':' + location.port,
+      );
+
+      socket.on('refresh_accounts', function (data) {
+        updateAccounts(data.accounts);
+      });
+
+      function updateAccounts(accounts) {
+        var accountList = document.getElementById('account-list');
+        accountList.innerHTML = '';
+
+        accounts.forEach(function (account) {
+          var listItem = document.createElement('li');
+          listItem.innerHTML =
+            account.name +
+            ' - ' +
+            account.gitToken +
+            ' <a href="/update/' +
+            account.accountId +
+            '">Edit</a> <a href="/delete/' +
+            account.accountId +
+            '">Delete</a>';
+          accountList.appendChild(listItem);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Account List</h1>
+    <ul id="account-list">
+      {% for account in accounts %}
+      <li>
+        {{ account.name }} - {{ account.accountId }}
+        <a href="{{ url_for('root.update', account_id=account.accountId) }}"
+          >Edit</a
+        >
+        <a href="{{ url_for('root.delete', account_id=account.accountId) }}"
+          >Delete</a
+        >
+      </li>
+      {% endfor %}
+    </ul>
+    <a href="{{ url_for('root.create') }}">Create New Account</a>
+  </body>
+</html>

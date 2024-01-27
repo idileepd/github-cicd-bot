@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Account</title>
+  </head>
+  <body>
+    <h1>Edit Account</h1>
+    <form
+      action="{{ url_for('root.update', account_id=account.accountId) }}"
+      method="post"
+    >
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        value="{{ account.name }}"
+        required
+      /><br />
+
+      <label for="git_token">Git Token:</label>
+      <input
+        type="text"
+        id="git_token"
+        name="git_token"
+        value="{{ account.gitToken }}"
+        required
+      /><br />
+
+      <input type="submit" value="Update Account" />
+    </form>
+    <a href="{{ url_for('root.index') }}">Back to Account List</a>
+  </body>
+</html>

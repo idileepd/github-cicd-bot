@@ -24,10 +24,8 @@ class MainRoutes(Blueprint):
 
         @self.route('/')
         def index():
-            print("----- > Work !!")
             accounts = self.session.query(Account).all()
-            # print(accounts)
-            return render_template('index.html', accounts=accounts)
+            return render_template('root/index.html', accounts=accounts)
         
         @self.route('/create', methods=['GET', 'POST'], )
         def create():
@@ -47,5 +45,39 @@ class MainRoutes(Blueprint):
                 return redirect(url_for('root.index'))
 
 
-            return render_template('create.html')
+            return render_template('root/create.html')
 
+
+        @self.route('/update/<string:account_id>', methods=['GET', 'POST'])
+        def update(account_id):
+            try:
+                account = self.session.query(Account).filter_by(accountId=account_id).one()
+
+                if request.method == 'POST':
+                    # Update account information
+                    account.name = request.form['name']
+                    account.gitToken = request.form['git_token']
+
+                    self.session.commit()
+
+                    return redirect(url_for('root.index'))
+
+                return render_template('root/update.html', account=account)
+            except Exception as e:
+                return 'Account not found', 404
+            
+        @self.route('/delete/<string:account_id>', methods=['GET', 'POST'])
+        def delete(account_id):
+            try:
+                account = self.session.query(Account).filter_by(accountId=account_id).one()
+
+                if request.method == 'POST':
+                    # Delete the account
+                    self.session.delete(account)
+                    self.session.commit()
+
+                    return redirect(url_for('root.index'))
+
+                return render_template('root/delete.html', account=account)
+            except Exception as e:
+                return 'Account not found', 404

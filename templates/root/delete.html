@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete Account</title>
+  </head>
+  <body>
+    <h1>Delete Account</h1>
+    <p>Are you sure you want to delete the account "{{ account.name }}"?</p>
+    <form
+      action="{{ url_for('root.delete', account_id=account.accountId) }}"
+      method="post"
+    >
+      <input type="submit" value="Delete Account" />
+    </form>
+    <a href="{{ url_for('root.index') }}">Cancel</a>
+  </body>
+</html>
