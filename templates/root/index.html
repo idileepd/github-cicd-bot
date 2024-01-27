@@ -31,6 +31,7 @@
       );
 
       socket.on('refresh_accounts', function (data) {
+        console.log(data);
         updateAccounts(data.accounts);
       });
 

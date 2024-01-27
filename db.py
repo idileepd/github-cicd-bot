@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from sqlalchemy import create_engine, Column, String
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
-
+from secure import Secure
 Base = declarative_base()
 
 # Tables
@@ -11,6 +11,13 @@ class Account(Base):
     accountId = Column(String, primary_key=True)
     name = Column(String)
     gitToken = Column(String)
+
+    def get_json(self):
+        return {
+            'accountId': self.accountId,
+            'name': self.name,
+            'gitToken': Secure.decrypt(self.gitToken)
+        }
 class Repository(Base):
     __tablename__ = 'repositories'
     repoId = Column(String, primary_key=True)

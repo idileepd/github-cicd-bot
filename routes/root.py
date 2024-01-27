@@ -5,15 +5,6 @@ from sqlalchemy.orm import Session
 from db import Account
 from secure import Secure
 
-# root_bp = Blueprint('root', __name__)
-
-# @root_bp.route('/')
-# def index():
-#     print("got Route")
-#     return render_template('index.html', accounts=[])
-
-
-
 class MainRoutes(Blueprint):
     socketio:SocketIO
     session: Session
@@ -42,6 +33,10 @@ class MainRoutes(Blueprint):
                 self.session.add(new_account)
                 self.session.commit()
 
+                # refresh if any user listening
+                accounts = session.query(Account).all()
+                socketio.emit('refresh_accounts', {'accounts': [acc.get_json() for acc in accounts]})
+
                 return redirect(url_for('root.index'))
 
 
@@ -57,8 +52,11 @@ class MainRoutes(Blueprint):
                     # Update account information
                     account.name = request.form['name']
                     account.gitToken = request.form['git_token']
-
                     self.session.commit()
+
+                    # refresh if any user listening
+                    accounts = session.query(Account).all()
+                    socketio.emit('refresh_accounts', {'accounts': [acc.get_json() for acc in accounts]})
 
                     return redirect(url_for('root.index'))
 
@@ -75,6 +73,10 @@ class MainRoutes(Blueprint):
                     # Delete the account
                     self.session.delete(account)
                     self.session.commit()
+
+                    # refresh if any user listening
+                    accounts = session.query(Account).all()
+                    socketio.emit('refresh_accounts', {'accounts': [acc.get_json() for acc in accounts]})
 
                     return redirect(url_for('root.index'))
 
