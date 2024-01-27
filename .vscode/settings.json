@@ -3,5 +3,5 @@
   "editor.formatOnSave": true,
   "prettier.singleQuote": true,
   "prettier.trailingComma": "all",
-  "cSpell.words": ["jsonify"]
+  "cSpell.words": ["fernet", "jsonify", "sessionmaker", "sqlalchemy"]
 }
