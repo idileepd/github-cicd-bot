@@ -14,4 +14,8 @@ class TestRoutes(Blueprint):
         @self.route('/')
         def child_route():
             return f'Hello from the child blueprint! Additional data: ?'
+        
+        @self.route('/<string:id>')
+        def child_2(id):
+            return f'Hello from the child blueprint! Additional data: ? {id}'
 

@@ -22,6 +22,12 @@ class Repository(Base):
     __tablename__ = 'repositories'
     repoId = Column(String, primary_key=True)
     accountId = Column(String)
+
+    def get_json(self):
+        return {
+            'accountId': self.accountId,
+            'repoId': self.repoId,
+        }
            
 class DB:
     _instance = None

@@ -1,22 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account List</title>
-  </head>
-  <body>
-    <h1>Account List</h1>
-    <ul>
-      {% for account in accounts %}
-      <li>{{ account.name }} - {{ account.accountId }}</li>
-      {% endfor %}
-    </ul>
-    <a href="{{ url_for('root.create') }}">Create New Account</a>
-  </body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,16 +41,14 @@
     <ul id="account-list">
       {% for account in accounts %}
       <li>
-        {{ account.name }} - {{ account.accountId }}
-        <a href="{{ url_for('root.update', account_id=account.accountId) }}"
-          >Edit</a
-        >
-        <a href="{{ url_for('root.delete', account_id=account.accountId) }}"
-          >Delete</a
-        >
+        {{ account.name }} -
+
+        <a href="/accounts/{{ account.accountId }}">{{ account.accountId }}</a>
+        <a href="/accounts/edit/{{ account.accountId }}">Edit</a>
+        <a href="/accounts/delete/{{ account.accountId }}">Delete</a>
       </li>
       {% endfor %}
     </ul>
-    <a href="{{ url_for('root.create') }}">Create New Account</a>
+    <a href="{{ url_for('account.create') }}">Create New Account</a>
   </body>
 </html>
