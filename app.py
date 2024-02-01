@@ -21,6 +21,8 @@ socketio = SocketIO()
 
 # app.register_blueprint(root_bp)
 app.register_blueprint(MainRoutes(name='root', import_name=__name__, session=session, socketio=socketio), url_prefix='/')
+# app.register_blueprint(MainRoutes(name='root', import_name=__name__, session=session, socketio=socketio), url_prefix='/')
+
 # app.register_blueprint(MainRoutes(name='main', import_name=__name__, session=session, socketio=socketio), url_prefix='/')
 # app.register_blueprint(TestRoutes(name='test', import_name=__name__, session=session, socketio=socketio), url_prefix='/test')
 
