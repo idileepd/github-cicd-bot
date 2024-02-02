@@ -9,9 +9,18 @@
   <body>
     <h1>Edit Account</h1>
     <form
-      action="{{ url_for('root.update', account_id=account.accountId) }}"
+      action="{{ url_for('account.update', account_id=account.accountId) }}"
       method="post"
     >
+      <label for="accountId">Account Id:</label>
+
+      <input
+        type="text"
+        id="accountId"
+        name="accountId"
+        value="{{ account.accountId }}"
+        disabled
+      /><br />
       <label for="name">Name:</label>
       <input
         type="text"
@@ -32,6 +41,6 @@
 
       <input type="submit" value="Update Account" />
     </form>
-    <a href="{{ url_for('root.index') }}">Back to Account List</a>
+    <a href="{{ url_for('account.all_accounts') }}">Back to Account List</a>
   </body>
 </html>

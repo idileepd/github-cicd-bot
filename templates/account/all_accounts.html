@@ -44,8 +44,8 @@
         {{ account.name }} -
 
         <a href="/accounts/{{ account.accountId }}">{{ account.accountId }}</a>
-        <a href="/accounts/edit/{{ account.accountId }}">Edit</a>
-        <a href="/accounts/delete/{{ account.accountId }}">Delete</a>
+        <a href="/accounts/{{ account.accountId }}/update">Edit</a>
+        <a href="/accounts/{{ account.accountId }}/delete">Delete</a>
       </li>
       {% endfor %}
     </ul>

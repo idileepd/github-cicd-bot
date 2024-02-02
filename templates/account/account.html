@@ -4,14 +4,59 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account</title>
+    <title>Account - Repos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script type="text/javascript">
+      const accountId = location.pathname.split('/')[1];
+      var socket = io.connect(
+        'http://' + document.domain + ':' + location.port,
+      );
+
+      socket.on(`${accountId}/repos`, function (data) {
+        console.log(data);
+        updateRepos(data.repos);
+      });
+
+      function updateRepos(accounts) {
+        var accountList = document.getElementById('repos-list');
+        accountList.innerHTML = '';
+
+        accounts.forEach(function (account) {
+          var listItem = document.createElement('li');
+          listItem.innerHTML =
+            account.name +
+            ' - ' +
+            account.gitToken +
+            ' <a href="/update/' +
+            account.accountId +
+            '">Edit</a> <a href="/delete/' +
+            account.accountId +
+            '">Delete</a>';
+          accountList.appendChild(listItem);
+        });
+      }
+    </script>
   </head>
   <body>
-    <h1>Account "{{ account.name }}"</h1>
-    <ul id="account-list">
+    <h1>Repos List</h1>
+    <h1>Account Id- {{account.accountId}}</h1>
+    <ul id="repos-list">
       {% for repo in repos %}
-      <li>{{ repo.repoId }} - {{ repo.accountId }}</li>
+      <li>
+        {{ repo.repoId }} -
+
+        <a href="/accounts/{{account.accountId}}/repos/{{ repo.repoId }}"
+          >{{ repo.accountId }}</a
+        >
+        <a href="/accounts/{{account.accountId}}/repos/{{ repo.repoId }}/update"
+          >Edit</a
+        >
+        <a href="/accounts/{{account.accountId}}/repos/{{ repo.repoId }}/delete"
+          >Delete</a
+        >
+      </li>
       {% endfor %}
     </ul>
+    <a href="/accounts/{{account.accountId}}/repos/create">Create New Repo</a>
   </body>
 </html>

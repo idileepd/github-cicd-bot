@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from sqlalchemy import create_engine, Column, String
+from sqlalchemy import create_engine, Column, String, Text
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
 from secure import Secure
 Base = declarative_base()
@@ -18,15 +18,33 @@ class Account(Base):
             'name': self.name,
             'gitToken': Secure.decrypt(self.gitToken)
         }
+    
+
 class Repository(Base):
-    __tablename__ = 'repositories'
+    __tablename__ = 'repos'
     repoId = Column(String, primary_key=True)
     accountId = Column(String)
 
+    preStartScript = Column(Text)
+    startScript = Column(Text)
+    
+    checkoutLogs = Column(Text)
+    preStartLogs = Column(Text)
+    startLogs = Column(Text)
+    allLogs=Column(Text)
+
+    env=Column(Text)
+
     def get_json(self):
         return {
-            'accountId': self.accountId,
             'repoId': self.repoId,
+            'accountId': self.accountId,
+            'preStartScript': self.preStartScript,
+            'startScript': self.startScript,
+            'checkoutLogs':self.checkoutLogs,
+            'preStartLogs':self.preStartLogs,
+            'startLogs':self.startLogs,
+            'allLogs': self.allLogs,
         }
            
 class DB:

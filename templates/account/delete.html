@@ -10,11 +10,11 @@
     <h1>Delete Account</h1>
     <p>Are you sure you want to delete the account "{{ account.name }}"?</p>
     <form
-      action="{{ url_for('root.delete', account_id=account.accountId) }}"
+      action="{{ url_for('account.delete', account_id=account.accountId) }}"
       method="post"
     >
       <input type="submit" value="Delete Account" />
     </form>
-    <a href="{{ url_for('root.index') }}">Cancel</a>
+    <a href="/accounts">Cancel</a>
   </body>
 </html>
