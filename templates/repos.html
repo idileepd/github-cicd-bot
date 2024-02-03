@@ -27,15 +27,92 @@
         <h3>All Repos of Account</h3>
         <div class="card-panel teal lighten-2">{{account.accountId}}</div>
 
+        <button data-target="{{account.accountId}}" class="btn modal-trigger">
+          Create Repo
+        </button>
+        <div id="{{account.accountId}}" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <form action="http://127.0.0.1:8000/items/" method="post">
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name" required /><br />
+
+              <label for="description">Description:</label>
+              <textarea id="description" name="description"></textarea><br />
+
+              <label for="price">Price:</label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                step="0.01"
+                required
+              /><br />
+
+              <label for="tax">Tax:</label>
+              <input type="number" id="tax" name="tax" step="0.01" /><br />
+
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat"
+              >Agree</a
+            >
+          </div>
+        </div>
+
+        <!-- Iterate through all repos !!! -->
         {% for repo in repos %}
         <div>
           Repo:
           <a href="/accounts/{{account.accountId}}/{{repo.repoId}}"
             >{{ repo.repoId }}</a
           >
+
+          <button data-target="{{repo.repoId}}" class="btn modal-trigger">
+            Repo Data
+          </button>
+
+          <!-- Modal Structure -->
+          <div id="{{repo.repoId}}" class="modal modal-fixed-footer">
+            <div class="modal-content">
+              <form action="http://127.0.0.1:8000/items/" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required /><br />
+
+                <label for="description">Description:</label>
+                <textarea id="description" name="description"></textarea><br />
+
+                <label for="price">Price:</label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  step="0.01"
+                  required
+                /><br />
+
+                <label for="tax">Tax:</label>
+                <input type="number" id="tax" name="tax" step="0.01" /><br />
+
+                <button type="submit">Submit</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class="modal-close waves-effect waves-green btn-flat"
+                >Agree</a
+              >
+            </div>
+          </div>
         </div>
         {% endfor %}
       </div>
     </section>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll(".modal");
+        var instances = M.Modal.init(elems, {});
+      });
+    </script>
   </body>
 </html>
