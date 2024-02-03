@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CI-CD Bot</title>
+    <title>Accounts</title>
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
@@ -23,12 +23,18 @@
   <body>
     <section class="section">
       <div class="container">
-        <h1 class="title">Hello World</h1>
-        <p class="subtitle">
-          My first cicd custom bot. <strong>Be Strong</strong>!
-        </p>
-        <a href="/accounts/">Access the Account</a>
+        <h1 class="title">All Accounts You Added</h1>
+        {% for acc in accounts %}
+        <div class="ui segment">
+          <p class="ui big header">
+            Account Id:
+            <a href="/accounts/{{acc.accountId}}">{{ acc.accountId }}</a> | Name
+            : {{ acc.name }}
+          </p>
+        </div>
+        {% endfor %}
       </div>
     </section>
+    <script></script>
   </body>
 </html>

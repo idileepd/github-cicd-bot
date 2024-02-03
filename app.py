@@ -1,29 +1,61 @@
 from dotenv import load_dotenv
+
 load_dotenv()
-from flask import Flask
-from flask_socketio import SocketIO
-from routes.root import MainRoutes
-from routes.account import AccountRoutes
+from fastapi import FastAPI, Depends, Request, Form, status
+from fastapi.staticfiles import StaticFiles
 
-from db import DB, Account
+from starlette.responses import RedirectResponse
+from starlette.templating import Jinja2Templates
+from sqlalchemy.orm import Session
 
-session = DB.get_session()
-
-# RealTime Stuff ----------------------------------------
-app = Flask(__name__)
-socketio = SocketIO()
-
-# app.register_blueprint(root_bp)
-app.register_blueprint(MainRoutes(name='root', import_name=__name__, session=session, socketio=socketio), url_prefix='/')
-app.register_blueprint(AccountRoutes(name='account', import_name=__name__, session=session, socketio=socketio), url_prefix='/accounts')
-# app.register_blueprint(RepoRoutes(name='repos', import_name=__name__, session=session, socketio=socketio), url_prefix='/accounts/repos')
+from routes import account
+from database import DB, Session
 
 
-@socketio.on('update_accounts')
-def handle_update_accounts():
-    accounts = session.query(Account).all()
-    socketio.emit('refresh_accounts', {'accounts': accounts})
+templates = Jinja2Templates(directory="templates")
 
-if __name__ == '__main__':
-    socketio.init_app(app)
-    socketio.run(app, debug=True, host="0.0.0.0",port=5001)
+app = FastAPI()
+
+session: Session = DB.get_session()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Routes
+account.addAccountRoutes(app, session, templates)
+
+
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request},
+    )
+
+
+# @app.post("/add")
+# def add(request: Request, title: str = Form(...), db: Session = Depends(get_db)):
+#     new_todo = models.Todo(title=title)
+#     db.add(new_todo)
+#     db.commit()
+
+#     url = app.url_path_for("home")
+#     return RedirectResponse(url=url, status_code=status.HTTP_303_SEE_OTHER)
+
+
+# @app.get("/update/{todo_id}")
+# def update(request: Request, todo_id: int, db: Session = Depends(get_db)):
+#     todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
+#     todo.complete = not todo.complete
+#     db.commit()
+
+#     url = app.url_path_for("home")
+#     return RedirectResponse(url=url, status_code=status.HTTP_302_FOUND)
+
+
+# @app.get("/delete/{todo_id}")
+# def delete(request: Request, todo_id: int, db: Session = Depends(get_db)):
+#     todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
+#     db.delete(todo)
+#     db.commit()
+
+#     url = app.url_path_for("home")
+#     return RedirectResponse(url=url, status_code=status.HTTP_302_FOUND)
